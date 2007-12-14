@@ -12,6 +12,7 @@ Source0:       %{oname}-%{version}.tar.bz2
 URL: 	       http://www.linuxsampler.org/
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
+BuildRequires: libsndfile-devel
 
 %description
 C++ library for loading Gigasampler files and DLS Level 1/2 files.

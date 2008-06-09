@@ -38,8 +38,12 @@ Provides: 	lib%name = %version-%release
 %description -n %libname 
 C++ library for loading Gigasampler files and DLS Level 1/2 files
 
+%if %mdkversion < 200900
 %post -n %libname -p /sbin/ldconfig
+%endif
+%if %mdkversion < 200900
 %postun -n %libname -p /sbin/ldconfig
+%endif
 
 %files -n %libname
 %defattr(-,root,root)

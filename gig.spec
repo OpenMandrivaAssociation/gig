@@ -5,7 +5,7 @@
 Name:          gig
 Summary:       C++ library for loading Gigasampler files
 Version:       3.2.1
-Release:       %mkrel 1
+Release:       %mkrel 3
 License:       GPL
 Group:	       System/Libraries 
 Source0:       %{oname}-%{version}.tar.bz2

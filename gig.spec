@@ -6,15 +6,13 @@
 Name:          gig
 Summary:       C++ library for loading Gigasampler files
 Version:       3.3.0
-Release:       %mkrel 2
+Release:       3
 License:       GPLv2+
 Group:	       System/Libraries 
 Source0:       %{oname}-%{version}.tar.bz2
 Patch0:		libgig-gcc-4.3.patch
 URL: 	       http://www.linuxsampler.org/
-BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-buildroot
-
-BuildRequires: libsndfile-devel
+BuildRequires: pkgconfig(sndfile)
 
 %description
 C++ library for loading Gigasampler files and DLS Level 1/2 files.
@@ -40,13 +38,6 @@ Provides: 	lib%name = %version-%release
 %description -n %libname 
 C++ library for loading Gigasampler files and DLS Level 1/2 files
 
-%if %mdkversion < 200900
-%post -n %libname -p /sbin/ldconfig
-%endif
-%if %mdkversion < 200900
-%postun -n %libname -p /sbin/ldconfig
-%endif
-
 %files -n %libname
 %defattr(-,root,root)
 %{_libdir}/libgig.so.%{major}*
@@ -70,7 +61,6 @@ Development libraries from %oname
 %{_includedir}/RIFF.h
 %{_includedir}/gig.h
 %{_libdir}/libgig.a
-%{_libdir}/libgig.la
 %{_libdir}/libgig.so
 %{_libdir}/pkgconfig/gig.pc
 
@@ -89,4 +79,33 @@ make
 make DESTDIR=%buildroot  install
 
 %clean
+
+
+
+%changelog
+* Thu Dec 09 2010 Oden Eriksson <oeriksson@mandriva.com> 3.3.0-2mdv2011.0
++ Revision: 618471
+- the mass rebuild of 2010.0 packages
+
+* Thu Aug 27 2009 Emmanuel Andry <eandry@mandriva.org> 3.3.0-1mdv2010.0
++ Revision: 421759
+- New version 3.3.0
+
+* Sun Sep 07 2008 Emmanuel Andry <eandry@mandriva.org> 3.2.1-3mdv2009.0
++ Revision: 282392
+- apply devel policy
+- add gcc43 patch from gentoo
+- use configure2_5x
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - rebuild
+
+  + Pixel <pixel@mandriva.com>
+    - do not call ldconfig in %%post/%%postun, it is now handled by filetriggers
+
+* Fri Dec 14 2007 Nicolas Lécureuil <nlecureuil@mandriva.com> 3.2.1-1mdv2008.1
++ Revision: 120265
+- Fix BuildRequires
+- import gig
+
 

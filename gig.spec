@@ -89,7 +89,7 @@ rm -rf %{buildroot}/%{_libdir}/libgig
 
 %files  -n %{devname}
 %{_includedir}/*
-%{_libdir}/libgig.a
+#{_libdir}/libgig.a
 %{_libdir}/libgig.so
 %{_libdir}/pkgconfig/gig.pc
 

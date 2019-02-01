@@ -98,7 +98,7 @@ rm -rf %{buildroot}/%{_libdir}/libgig
 %{_libdir}/libakai.so.%{akaimajor}.*
 
 %files  -n %{devakai}
-%{_libdir}/libakai.a
+#{_libdir}/libakai.a
 %{_libdir}/libakai.so
 %{_libdir}/pkgconfig/akai.pc
 

@@ -1,84 +1,107 @@
-%define	major	6
-%define	libname	%mklibname %{name} %{major}
-%define	develname	%mklibname %{name} -d
-%define oname  libgig
+%define major	8
+%define akaimajor 0
+%define tarballname libgig
+%define libname %mklibname %{name} %{major}
+%define libakai %mklibname %{name}-akai %{akaimajor}
+%define devname %mklibname %{name} -d
+%define devakai %mklibname %{name}-akai -d
 
-Name:          gig
-Summary:       C++ library for loading Gigasampler files
-Version:       3.3.0
-Release:       4
-License:       GPLv2+
-Group:	       System/Libraries 
-Source0:       %{oname}-%{version}.tar.bz2
-Patch0:		libgig-gcc-4.3.patch
-URL: 	       http://www.linuxsampler.org/
-BuildRequires: pkgconfig(sndfile)
+Name:		gig
+Version:	4.1.0
+Release:	1
+Summary:	C++ library for loading Gigasampler files and DLS Level 1/2 files
+License:	GPLv2 and LGPL
+# Note akai library is LGPL
+Group:		Sound/Utilities
+Source0:	http://download.linuxsampler.org/packages/libgig-%{version}.tar.bz2
+URL:		http://www.linuxsampler.org/libgig/
+
+BuildRequires:	pkgconfig(sndfile)
+BuildRequires:	pkgconfig(uuid)
+BuildRequires:	doxygen
+Requires:	%{libname} = %{version}-%{release}
 
 %description
+C++ library for accessing Gigasampler/GigaStudio, DLS,
+SoundFont and KORG sound files.
+
+%package -n %{libname}
+Summary:	C++ library for loading Gigasampler files and DLS Level 1/2 files
+Group:		System/Libraries
+Requires:	%{name} >= %{version}-%{release}
+Provides:	lib%{name} = %{version}-%{release}
+
+%description -n %{libname}
 C++ library for loading Gigasampler files and DLS Level 1/2 files.
 
-%files 
-%defattr(-,root,root)
-%{_bindir}/dlsdump
-%{_bindir}/gigdump
-%{_bindir}/gigextract
-%{_bindir}/rifftree
-%{_mandir}/man1/dlsdump.1.*
-%{_mandir}/man1/gigdump.1.*
-%{_mandir}/man1/gigextract.1.*
-%{_mandir}/man1/rifftree.1.*
+%package -n %{devname}
+Summary:	Header files for developers
+Group:		System/Libraries
+Requires:	%{libname} = %{version}-%{release}
+Requires:	%{_lib}uuid-devel
+Provides:	%{name}-devel = %{version}-%{release}
+Provides:	%{tarballname}-devel = %{version}-%{release}
 
-#--------------------------------------------------------------------
+%description -n %{devname}
+Header files for developers.
 
-%package -n	%libname
-Group: 		System/Libraries
-Summary: 	Libraries for %name
-Provides: 	lib%name = %version-%release
+%package -n %{libakai}
+Summary:	C++ library for accessing AKAI disk images
+Group:		System/Libraries
+License:	LGPL
 
-%description -n %libname 
-C++ library for loading Gigasampler files and DLS Level 1/2 files
+%description -n %{libakai}
+Akai lib
 
-%files -n %libname
-%defattr(-,root,root)
-%{_libdir}/libgig.so.%{major}*
+%package -n %{devakai}
+Summary:	Header files for developers
+Group:		System/Libraries
+License:	LGPL
+Requires:	%{libakai} = %{version}-%{release}
+Provides:	%{name}-akai-devel = %{version}-%{release}
 
-#--------------------------------------------------------------------
+%description -n %{devakai}
+Header files for developers.
 
-%package -n	%develname
-Group: 		Development/Other
-Summary: 	Libraries for %name
-Requires:	%libname = %version-%release
-Provides:	lib%name-devel = %version-%release
-Provides: 	%{name}-devel = %{version}-%{release}
-Obsoletes:	%{_lib}%{name}6-devel
+%prep
+%setup -q -n lib%{name}-%{version}
 
-%description -n	%develname
-Development libraries from %oname
+%build
+%configure
+%make_build
+make docs
 
-%files -n %develname
-%defattr (-,root,root)
-%{_includedir}/DLS.h
-%{_includedir}/RIFF.h
-%{_includedir}/gig.h
+%install
+%make_install
+find %{buildroot} -name "*.la" -delete
+
+mv %{buildroot}/%{_libdir}/libgig/* %{buildroot}/%{_libdir}/
+rm -rf %{buildroot}/%{_libdir}/libgig
+
+%files
+%doc AUTHORS COPYING ChangeLog NEWS README TODO doc/html
+%{_mandir}/man1/*
+%{_bindir}/*
+
+%files  -n %{libname}
+%{_libdir}/libgig.so.%{major}
+%{_libdir}/libgig.so.%{major}.*
+
+%files  -n %{devname}
+%{_includedir}/*
 %{_libdir}/libgig.a
 %{_libdir}/libgig.so
 %{_libdir}/pkgconfig/gig.pc
 
-#--------------------------------------------------------------------
+%files -n %{libakai}
+%{_libdir}/libakai.so.%{akaimajor}
+%{_libdir}/libakai.so.%{akaimajor}.*
 
-%prep
-%setup -q -n %oname-%version
-%patch0
+%files  -n %{devakai}
+%{_libdir}/libakai.a
+%{_libdir}/libakai.so
+%{_libdir}/pkgconfig/akai.pc
 
-%build
-#make -f Makefile.cvs
-%configure2_5x
-make
-
-%install
-make DESTDIR=%buildroot  install
-
-%clean
 
 
 

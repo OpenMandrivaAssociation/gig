@@ -1,4 +1,4 @@
-%define major	8
+%define major	9
 %define akaimajor 0
 %define tarballname libgig
 %define libname %mklibname %{name} %{major}
@@ -7,7 +7,7 @@
 %define devakai %mklibname %{name}-akai -d
 
 Name:		gig
-Version:	4.1.0
+Version:	4.2.0
 Release:	1
 Summary:	C++ library for loading Gigasampler files and DLS Level 1/2 files
 License:	GPLv2 and LGPL

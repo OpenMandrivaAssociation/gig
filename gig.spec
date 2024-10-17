@@ -14,7 +14,7 @@ License:	GPLv2 and LGPL
 # Note akai library is LGPL
 Group:		Sound/Utilities
 Source0:	http://download.linuxsampler.org/packages/libgig-%{version}.tar.bz2
-URL:		http://www.linuxsampler.org/libgig/
+URL:		https://www.linuxsampler.org/libgig/
 
 BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	pkgconfig(uuid)

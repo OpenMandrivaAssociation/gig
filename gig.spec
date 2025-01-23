@@ -1,4 +1,4 @@
-%define major	10
+%define major	11
 %define akaimajor 0
 %define tarballname libgig
 %define libname %mklibname %{name} %{major}

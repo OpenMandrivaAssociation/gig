@@ -7,8 +7,8 @@
 %define devakai %mklibname %{name}-akai -d
 
 Name:		gig
-Version:	4.3.0
-Release:	2
+Version:	4.4.1
+Release:	1
 Summary:	C++ library for loading Gigasampler files and DLS Level 1/2 files
 License:	GPLv2 and LGPL
 # Note akai library is LGPL

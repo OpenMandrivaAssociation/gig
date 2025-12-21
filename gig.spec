@@ -17,6 +17,11 @@ Url:		https://www.linuxsampler.org/libgig/
 Source0:	https://download.linuxsampler.org/packages/libgig-%{version}.tar.bz2
 # We want the library files in %%_libdir, not in %%_libdir/libgig
 Patch0:	libgig-4.5.0-fix-libdir.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	doxygen
 BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	pkgconfig(uuid)

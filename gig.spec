@@ -8,7 +8,7 @@
 
 Summary:	C++ library for loading Gigasampler files and DLS Level 1/2 files
 Name:	gig
-Version:	4.5.0
+Version:	4.5.2
 Release:	1
 # Note: akai library is LGPL
 License:	GPLv2 and LGPL
@@ -16,7 +16,7 @@ Group:	Sound/Utilities
 Url:		https://www.linuxsampler.org/libgig/
 Source0:	https://download.linuxsampler.org/packages/libgig-%{version}.tar.bz2
 # We want the library files in %%_libdir, not in %%_libdir/libgig
-Patch0:	libgig-4.5.0-fix-libdir.patch
+# dropped (no longer applies): Patch0:	libgig-4.5.2-fix-libdir.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool-base
@@ -103,7 +103,7 @@ Header files for developers using akai library.
 #-----------------------------------------------------------------------------
 
 %prep
-%autosetup -p1 -n %{tarballname}-%{version}
+%autosetup -p1 -n libgig-4.5.2
 
 
 %build

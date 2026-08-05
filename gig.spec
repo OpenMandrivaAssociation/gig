@@ -9,12 +9,16 @@
 Summary:	C++ library for loading Gigasampler files and DLS Level 1/2 files
 Name:	gig
 Version:	4.6.0
-Release:	1
+Release:	2
 # Note: akai library is LGPL
 License:	GPLv2 and LGPL-2.0
 Group:	Sound/Utilities
 Url:		https://www.linuxsampler.org/libgig/
 Source0:	https://download.linuxsampler.org/packages/%{oname}-%{version}.tar.bz2
+# We want the libraries in %%{_libdir}, not %%{_libdir}/%%{name},
+# otherwise linuxsampler cannot find them at build time...
+# Need to be rediffed when updating the package
+Patch0:	libgig-4-6.0-fix-libdir.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	doxygen
@@ -48,8 +52,8 @@ Provides:	lib%{name} = %{version}-%{release}
 C++ library for loading Gigasampler files and DLS Level 1/2 files.
 
 %files  -n %{libname}
-%{_libdir}/%{oname}/libgig.so.%{major}
-%{_libdir}/%{oname}/libgig.so.%{major}.*
+%{_libdir}/libgig.so.%{major}
+%{_libdir}/libgig.so.%{major}.*
 
 #-----------------------------------------------------------------------------
 
@@ -66,7 +70,7 @@ Header files for developers using %{libname}.
 
 %files  -n %{devname}
 %{_includedir}/%{oname}/*.h
-%{_libdir}/%{oname}/libgig.so
+%{_libdir}/libgig.so
 %{_libdir}/pkgconfig/%{name}.pc
 
 #-----------------------------------------------------------------------------
@@ -80,8 +84,8 @@ License:	LGPLv2
 Akai library for accessing AKAI disk images.
 
 %files -n %{libakai}
-%{_libdir}/%{oname}/libakai.so.%{akaimajor}
-%{_libdir}/%{oname}/libakai.so.%{akaimajor}.*
+%{_libdir}/libakai.so.%{akaimajor}
+%{_libdir}/libakai.so.%{akaimajor}.*
 
 #-----------------------------------------------------------------------------
 
@@ -96,7 +100,7 @@ Provides:	%{name}-akai-devel = %{version}-%{release}
 Header files for developers using akai library.
 
 %files  -n %{devakai}
-%{_libdir}/%{oname}/libakai.so
+%{_libdir}/libakai.so
 %{_libdir}/pkgconfig/akai.pc
 
 #-----------------------------------------------------------------------------

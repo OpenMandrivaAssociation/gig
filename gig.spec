@@ -1,6 +1,6 @@
-%define	major	12
+%define	oname libgig
+%define	major	14
 %define	akaimajor 0
-%define	tarballname libgig
 %define	libname %mklibname %{name} %{major}
 %define	libakai %mklibname %{name}-akai %{akaimajor}
 %define	devname %mklibname %{name} -d
@@ -8,21 +8,20 @@
 
 Summary:	C++ library for loading Gigasampler files and DLS Level 1/2 files
 Name:	gig
-Version:	4.5.2
+Version:	4.6.0
 Release:	1
 # Note: akai library is LGPL
-License:	GPLv2 and LGPL
+License:	GPLv2 and LGPL-2.0
 Group:	Sound/Utilities
 Url:		https://www.linuxsampler.org/libgig/
-Source0:	https://download.linuxsampler.org/packages/libgig-%{version}.tar.bz2
-# We want the library files in %%_libdir, not in %%_libdir/libgig
-# dropped (no longer applies): Patch0:	libgig-4.5.2-fix-libdir.patch
+Source0:	https://download.linuxsampler.org/packages/%{oname}-%{version}.tar.bz2
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	libtool-base
-BuildRequires:	slibtool
-BuildRequires:	make
 BuildRequires:	doxygen
+BuildRequires:	libtool
+BuildRequires:	libtool-base
+BuildRequires:	make
+#BuildRequires:	slibtool
 BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	pkgconfig(uuid)
 Requires:	%{libname} = %{version}-%{release}
@@ -32,12 +31,12 @@ C++ library for accessing Gigasampler/GigaStudio, DLS, SoundFont and KORG
 sound files.
 
 %files
-%doc AUTHORS COPYING ChangeLog NEWS README TODO doc/html
+%license COPYING
+%doc AUTHORS ChangeLog NEWS README TODO doc/html
 %{_bindir}/*
 %{_mandir}/man1/*
 
 #-----------------------------------------------------------------------------
-
 
 %package -n %{libname}
 Summary:	C++ library for loading Gigasampler files and DLS Level 1/2 files
@@ -49,8 +48,8 @@ Provides:	lib%{name} = %{version}-%{release}
 C++ library for loading Gigasampler files and DLS Level 1/2 files.
 
 %files  -n %{libname}
-%{_libdir}/libgig.so.%{major}
-%{_libdir}/libgig.so.%{major}.*
+%{_libdir}/%{oname}/libgig.so.%{major}
+%{_libdir}/%{oname}/libgig.so.%{major}.*
 
 #-----------------------------------------------------------------------------
 
@@ -60,14 +59,14 @@ Group:		Development/C++
 Requires:	%{libname} = %{version}-%{release}
 Requires:	pkgconfig(uuid)
 Provides:	%{name}-devel = %{version}-%{release}
-Provides:	%{tarballname}-devel = %{version}-%{release}
+Provides:	%{oname}-devel = %{version}-%{release}
 
 %description -n %{devname}
 Header files for developers using %{libname}.
 
 %files  -n %{devname}
-%{_includedir}/libgig/*.h
-%{_libdir}/libgig.so
+%{_includedir}/%{oname}/*.h
+%{_libdir}/%{oname}/libgig.so
 %{_libdir}/pkgconfig/%{name}.pc
 
 #-----------------------------------------------------------------------------
@@ -81,8 +80,8 @@ License:	LGPLv2
 Akai library for accessing AKAI disk images.
 
 %files -n %{libakai}
-%{_libdir}/libakai.so.%{akaimajor}
-%{_libdir}/libakai.so.%{akaimajor}.*
+%{_libdir}/%{oname}/libakai.so.%{akaimajor}
+%{_libdir}/%{oname}/libakai.so.%{akaimajor}.*
 
 #-----------------------------------------------------------------------------
 
@@ -97,16 +96,25 @@ Provides:	%{name}-akai-devel = %{version}-%{release}
 Header files for developers using akai library.
 
 %files  -n %{devakai}
-%{_libdir}/libakai.so
+%{_libdir}/%{oname}/libakai.so
 %{_libdir}/pkgconfig/akai.pc
 
 #-----------------------------------------------------------------------------
 
 %prep
-%autosetup -p1 -n libgig-4.5.2
+%autosetup -p1 -n %{oname}-%{version}
+
+# Fix FSF address
+sed -i 's/59 Temple Place, Suite 330, Boston, MA  02111-1307  USA/31 Milk Street, # 960789, Boston, MA 02196, USA/g' COPYING
+sed -i 's/59 Temple Place, Suite 330, Boston, MA  02111-1307  USA/31 Milk Street, # 960789, Boston, MA 02196, USA/g' src/Akai.h
 
 
 %build
+# Slibtool won't work with libgig
+ln -sf %{_bindir}/libtoolize slibtoolize
+export PATH=$PWD:$PATH
+export LIBTOOLIZE=%{_bindir}/libtoolize
+export LIBTOOL=%{_bindir}/libtool
 autoreconf -vfi
 %configure
 %make_build
